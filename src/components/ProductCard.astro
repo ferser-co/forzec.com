@@ -1,0 +1,96 @@
+---
+/**
+ * Tarjeta de producto FORZEC. Sigue el orden del brief:
+ *   1. Badge superior izquierdo (eco/atributo destacado)
+ *   2. Imagen del producto
+ *   3. Categoría en uppercase
+ *   4. Título H3
+ *   5. Slogan en itálica
+ *   6. Atributos con íconos
+ *   7. Presentaciones (chips) + CTA WhatsApp
+ *
+ * Solo se renderizan productos con `image` presente. Los que no tienen imagen
+ * se listan aparte en Products.astro como "Próximamente".
+ */
+import Icon from './Icon.astro';
+import { waForProduct } from '../data/site';
+import type { Product } from '../data/site';
+
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+const wa = waForProduct(product.name);
+
+// Insignia destacada: primer badge eco/bio si existe, sino el primero.
+const featuredBadge =
+  product.badges.find((b) => /bio|natural|eco/i.test(b.label)) ?? product.badges[0];
+
+const isDark = product.packaging.tone === 'dark';
+---
+
+<article class="card-hover group flex flex-col rounded-2xl border border-white/8 bg-[#0d0d0e] overflow-hidden">
+  {/* Imagen */}
+  <div class="relative aspect-[4/5] overflow-hidden bg-[#0a0a0a]">
+    {featuredBadge && (
+      <span
+        class:list={[
+          'absolute top-3 left-3 z-10 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.15em] backdrop-blur',
+          isDark ? 'bg-white/15 text-white' : 'bg-black/80 text-white',
+        ]}
+      >
+        <Icon name={featuredBadge.icon} class="w-3 h-3" />
+        {featuredBadge.label}
+      </span>
+    )}
+
+    <img
+      src={product.image}
+      alt={`${product.name} — FORZEC`}
+      class="absolute inset-0 h-full w-full object-contain p-6 group-hover:scale-[1.03] transition-transform duration-500"
+      loading="lazy"
+    />
+  </div>
+
+  {/* Cuerpo */}
+  <div class="flex flex-col flex-1 p-5">
+    <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-forzec)]">
+      {product.category}
+    </p>
+    <h3 class="mt-1 text-lg font-black tracking-tight text-white">
+      {product.name}
+    </h3>
+    <p class="mt-1 text-sm italic text-zinc-400">
+      {product.slogan}
+    </p>
+
+    <ul class="mt-4 space-y-1.5">
+      {product.badges.map((b) => (
+        <li class="inline-flex items-center gap-2 text-xs text-zinc-300">
+          <Icon name={b.icon} class="w-3.5 h-3.5 text-[var(--color-forzec)] shrink-0" />
+          {b.label}
+        </li>
+      ))}
+    </ul>
+
+    <div class="mt-5 pt-4 border-t border-white/8 flex flex-col gap-3">
+      <div class="flex flex-wrap gap-1.5">
+        {product.sizes.map((s) => (
+          <span class="inline-flex items-center rounded-md border border-white/10 bg-white/[0.04] px-2 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-zinc-300">
+            {s}
+          </span>
+        ))}
+      </div>
+      <a
+        href={wa}
+        target="_blank"
+        rel="noopener"
+        class="inline-flex items-center justify-center gap-2 rounded-md bg-[#25D366] px-4 py-2.5 text-xs font-black uppercase tracking-[0.15em] text-white hover:brightness-110 transition-all"
+      >
+        <Icon name="message-circle" class="w-3.5 h-3.5" />
+        Cotizar por WhatsApp
+      </a>
+    </div>
+  </div>
+</article>

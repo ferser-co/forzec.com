@@ -1,0 +1,104 @@
+---
+import Icon from './Icon.astro';
+import { productLines } from '../data/site';
+
+const totalProducts = productLines.reduce((acc, l) => acc + l.products.length, 0);
+---
+
+<section id="top" class="relative overflow-hidden pt-28 pb-16 sm:pt-36 sm:pb-24">
+  {/* Halo cinematográfico rojo */}
+  <div class="absolute inset-0 -z-10 pointer-events-none">
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[720px] w-[720px] halo opacity-70"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(0,0,0,0)_0%,#050505_75%)]"></div>
+  </div>
+
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-[1.05fr_1fr] gap-10 lg:gap-12 items-center">
+      {/* Columna izquierda — titular + CTAs */}
+      <div class="reveal">
+        <p class="mb-6 inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--color-forzec)]">
+          <span class="inline-block h-px w-8 bg-[var(--color-forzec)]"></span>
+          Limpieza técnica premium
+        </p>
+
+        <h1 class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black tracking-cine leading-[0.92] text-white mb-4">
+          LIMPIA TODO.
+        </h1>
+        <h1 class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black tracking-cine leading-[0.92] text-[var(--color-forzec)] mb-7">
+          TODO ES TODO.
+        </h1>
+
+        <p class="text-lg sm:text-xl font-semibold uppercase tracking-[0.18em] text-zinc-300 mb-3">
+          Una marca. Dos líneas. {totalProducts} productos.
+        </p>
+        <p class="text-base sm:text-lg text-zinc-400 max-w-xl leading-relaxed mb-10">
+          FORZEC es la marca de limpieza técnica premium de ASEOLAB. Desde la
+          crema multiusos del hogar hasta la cera líquida del taller, una
+          fórmula profesional para cada superficie.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-3 mb-10">
+          <a
+            href="#productos"
+            class="btn-forzec inline-flex items-center justify-center gap-2 rounded-md px-7 py-4 text-sm font-black uppercase tracking-[0.15em] text-white"
+          >
+            <Icon name="package" class="w-4 h-4" />
+            Ver productos
+          </a>
+          <a
+            href="#resultados"
+            class="btn-ghost inline-flex items-center justify-center gap-2 rounded-md px-7 py-4 text-sm font-bold uppercase tracking-[0.15em] text-white"
+          >
+            <Icon name="play" class="w-4 h-4" />
+            Ver resultados
+          </a>
+        </div>
+
+        {/* Mini badges debajo del CTA, como en la imagen de referencia */}
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-lg">
+          {[
+            { icon: 'droplets', label: 'Sin agua' },
+            { icon: 'grid-3x3', label: 'Multisuperficie' },
+            { icon: 'leaf', label: 'Biodegradable' },
+            { icon: 'shield-check', label: 'Uso profesional' },
+          ].map((b) => (
+            <div class="flex flex-col items-start gap-1.5">
+              <span class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-white/10 bg-white/[0.03] text-[var(--color-forzec)]">
+                <Icon name={b.icon} class="w-4 h-4" />
+              </span>
+              <span class="text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-400">{b.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Columna derecha — foto real del producto con halo */}
+      <div class="reveal relative" style="transition-delay: 150ms;">
+        <div class="relative aspect-square max-w-md mx-auto">
+          {/* Halo intenso bajo el producto */}
+          <div class="absolute inset-x-0 bottom-0 h-2/3 halo"></div>
+
+          {/* Foto real (cropeada al pote vía object-position) */}
+          <div class="relative h-full flex items-center justify-center">
+            <img
+              src="/images/candado.jpeg"
+              alt="FORZEC crema técnica multiusos · 250 g"
+              class="relative z-10 w-full h-full object-cover rounded-2xl"
+              style="object-position: 25% 60%; mask-image: radial-gradient(ellipse 70% 80% at 30% 60%, black 55%, transparent 85%); -webkit-mask-image: radial-gradient(ellipse 70% 80% at 30% 60%, black 55%, transparent 85%);"
+              loading="eager"
+              fetchpriority="high"
+            />
+
+            {/* Tag lateral "ver en acción" */}
+            <a href="#resultados" class="hidden lg:flex absolute top-1/2 -translate-y-1/2 right-0 flex-col items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 hover:text-white transition-colors">
+              <span style="writing-mode: vertical-rl; transform: rotate(180deg);">Ver en acción</span>
+              <span class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/[0.04]">
+                <Icon name="play" class="w-3.5 h-3.5 text-[var(--color-forzec)]" />
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

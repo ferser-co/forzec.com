@@ -1,0 +1,38 @@
+---
+import Icon from './Icon.astro';
+import Logo from './Logo.astro';
+import { site, waUrl, nav } from '../data/site';
+
+const wa = waUrl();
+---
+
+<header class="fixed inset-x-0 top-0 z-40 border-b border-white/5 bg-[#050505]/85 backdrop-blur-xl">
+  <nav aria-label="Principal" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex h-16 items-center justify-between gap-4">
+      <a href="#top" class="group flex items-center gap-2.5">
+        <Logo size="md" class="text-white" />
+      </a>
+
+      <div class="hidden md:flex items-center gap-8">
+        {nav.map((item) => (
+          <a
+            href={item.href}
+            class="text-xs font-bold uppercase tracking-[0.18em] text-zinc-400 hover:text-white transition-colors"
+          >
+            {item.label}
+          </a>
+        ))}
+      </div>
+
+      <a
+        href={wa}
+        target="_blank"
+        rel="noopener"
+        class="inline-flex items-center gap-2 rounded-md bg-[#25D366] px-3.5 py-2 text-xs font-bold text-white shadow-md shadow-emerald-900/40 hover:brightness-110 transition-all"
+      >
+        <Icon name="message-circle" class="w-3.5 h-3.5" />
+        WHATSAPP
+      </a>
+    </div>
+  </nav>
+</header>

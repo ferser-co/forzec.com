@@ -1,0 +1,116 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Inter', system-ui, sans-serif;
+
+  /* FORZEC palette — luxury industrial */
+  --color-ink: #050505;
+  --color-ink-soft: #0c0c0c;
+  --color-titanium: #1f1f22;
+  --color-titanium-soft: #2a2a2e;
+  --color-bone: #f5f5f4;
+  --color-mute: #a1a1aa;
+  --color-forzec: #e11d2a;
+  --color-forzec-bright: #ff2233;
+  --color-forzec-deep: #a30b18;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--color-ink);
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-ink);
+  color: var(--color-bone);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Reveal-on-scroll */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Halo rojo cinematográfico bajo el producto */
+.halo {
+  background: radial-gradient(ellipse at center, rgba(225, 29, 42, 0.45) 0%, rgba(225, 29, 42, 0.12) 35%, transparent 70%);
+  filter: blur(40px);
+}
+
+/* Subrayado rojo de eyebrow */
+.eyebrow-line::after {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 2px;
+  background: var(--color-forzec);
+  margin-top: 0.4rem;
+}
+
+/* Tracking ultra-tight para titulares cinematográficos */
+.tracking-cine {
+  letter-spacing: -0.04em;
+}
+
+/* Hover sutil en cards */
+.card-hover {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s, box-shadow 0.3s;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  border-color: rgba(225, 29, 42, 0.4);
+  box-shadow: 0 20px 60px -20px rgba(225, 29, 42, 0.25);
+}
+
+/* Botón rojo principal */
+.btn-forzec {
+  background: linear-gradient(180deg, var(--color-forzec-bright) 0%, var(--color-forzec) 100%);
+  box-shadow: 0 8px 24px -8px rgba(225, 29, 42, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+}
+.btn-forzec:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 32px -8px rgba(225, 29, 42, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  filter: brightness(1.05);
+}
+
+/* Botón secundario outline */
+.btn-ghost {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  transition: border-color 0.2s, background 0.2s;
+}
+.btn-ghost:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* WhatsApp sticky pulse */
+@keyframes wa-pulse {
+  0%, 100% { box-shadow: 0 8px 28px -6px rgba(37, 211, 102, 0.55), 0 0 0 0 rgba(37, 211, 102, 0.55); }
+  50%      { box-shadow: 0 8px 28px -6px rgba(37, 211, 102, 0.7), 0 0 0 14px rgba(37, 211, 102, 0); }
+}
+.wa-sticky {
+  animation: wa-pulse 2.4s ease-in-out infinite;
+}
+
+/* Líneas decorativas estilo blueprint */
+.divider-red {
+  position: relative;
+}
+.divider-red::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(225, 29, 42, 0.5) 50%, transparent);
+}

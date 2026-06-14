@@ -1,0 +1,104 @@
+---
+import Icon from './Icon.astro';
+import { demos } from '../data/site';
+---
+
+<section id="resultados" class="relative py-20 sm:py-28 bg-[#0a0a0a]">
+  <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-forzec)]/40 to-transparent"></div>
+
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-12 reveal">
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-cine text-white">
+        <span class="text-[var(--color-forzec)]">RESULTADOS</span> QUE HABLAN POR SÍ SOLOS.
+      </h2>
+      <p class="mt-4 text-sm sm:text-base text-zinc-400 max-w-xl mx-auto">
+        Cuatro pruebas reales. Sin retoques. Sin trucos. Solo el producto
+        sobre la superficie.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 reveal">
+      {demos.map((app, i) => (
+        <article
+          class="demo-card card-hover group relative overflow-hidden rounded-xl border border-white/8 bg-[#0f0f10]"
+          style={`transition-delay: ${i * 60}ms;`}
+        >
+          <div class="relative aspect-[4/5] sm:aspect-[9/14] overflow-hidden">
+            {/* Fallback visual (visible cuando el video no se reproduce) */}
+            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(225,29,42,0.18)_0%,_rgba(15,15,16,0)_60%),linear-gradient(180deg,#141416_0%,#0a0a0b_100%)] pointer-events-none"></div>
+            <div class="demo-fallback absolute inset-0 flex flex-col items-center justify-center gap-3 px-4 text-center transition-opacity duration-300 pointer-events-none">
+              <span class="inline-flex h-14 w-14 items-center justify-center rounded-full border border-white/15 bg-white/[0.04] backdrop-blur">
+                <Icon name={app.icon} class="w-6 h-6 text-[var(--color-forzec)]" />
+              </span>
+              <p class="text-base font-black uppercase tracking-[0.18em] text-white">{app.label}</p>
+              <p class="text-[10px] uppercase tracking-[0.22em] text-zinc-500">Demo · {app.label}</p>
+            </div>
+
+            <video
+              src={app.video}
+              poster={app.poster ?? undefined}
+              class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300"
+              muted
+              loop
+              playsinline
+              preload="metadata"
+              onmouseenter="this.play()"
+              onmouseleave="this.pause(); this.currentTime = 0;"
+            ></video>
+
+            {/* Overlay gradient + play icon */}
+            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent pointer-events-none"></div>
+            <div class="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-[var(--color-forzec)] px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.18em] text-white">
+              <span class="inline-block w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+              Real
+            </div>
+            <div class="absolute bottom-3 right-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/10 backdrop-blur border border-white/20 group-hover:bg-[var(--color-forzec)] group-hover:border-[var(--color-forzec)] transition-colors">
+              <Icon name="play" class="w-3.5 h-3.5 text-white ml-0.5" />
+            </div>
+          </div>
+          <div class="p-4 flex items-center justify-between">
+            <span class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.15em] text-white">
+              <Icon name={app.icon} class="w-3.5 h-3.5 text-[var(--color-forzec)]" />
+              {app.label}
+            </span>
+            <span class="text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-500">Ver demo</span>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <style>
+      /* Cuando el video reproduce, oculta el placeholder y muestra el video */
+      .demo-card.is-playing video { opacity: 1; }
+      .demo-card.is-playing .demo-fallback { opacity: 0; }
+    </style>
+
+    <p class="mt-8 text-center text-xs uppercase tracking-[0.18em] text-zinc-600">
+      Pasa el cursor / toca para reproducir
+    </p>
+  </div>
+
+  <script>
+    // Tap-to-play en mobile (no hover) + togglear el estado visual del card
+    document.querySelectorAll<HTMLVideoElement>('#resultados video').forEach((video) => {
+      const card = video.closest('.demo-card');
+
+      const showPlayingState = () => card?.classList.add('is-playing');
+      const hidePlayingState = () => card?.classList.remove('is-playing');
+
+      video.addEventListener('play',     showPlayingState);
+      video.addEventListener('playing',  showPlayingState);
+      video.addEventListener('pause',    hidePlayingState);
+      video.addEventListener('ended',    hidePlayingState);
+
+      video.addEventListener('click', () => {
+        if (video.paused) {
+          video.play();
+        } else {
+          video.pause();
+          video.currentTime = 0;
+        }
+      });
+    });
+  </script>
+</section>

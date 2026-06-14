@@ -1,0 +1,47 @@
+---
+/**
+ * Wordmark FORZEC — vector trazado del PDF oficial del producto.
+ * El SVG usa `currentColor`, así que cualquier `color: white` del padre lo tinta.
+ *
+ * <Logo class="h-7 text-white" />
+ * <Logo size="lg" />
+ *
+ * Para reemplazar el wordmark, sobrescribí D:\Proyectos\forzec\public\logo.svg.
+ */
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+interface Props {
+  class?: string;
+  /** Alturas preestablecidas. Si pasás `class` con h-*, se ignora. */
+  size?: 'sm' | 'md' | 'lg' | 'hero';
+  /** Texto accesible (sr-only). */
+  label?: string;
+}
+
+const { class: className = '', size, label = 'FORZEC' } = Astro.props;
+
+const heightClass = {
+  sm: 'h-5',
+  md: 'h-7',
+  lg: 'h-10',
+  hero: 'h-14 sm:h-20',
+}[size ?? 'md'];
+
+// Leemos el SVG en build time (cero JS en runtime, cero fetch extra).
+const here = path.dirname(fileURLToPath(import.meta.url));
+const svgPath = path.resolve(here, '../../public/logo.svg');
+let svg = fs.readFileSync(svgPath, 'utf-8');
+
+// Quitamos width/height del SVG raw para que tome el alto del contenedor.
+svg = svg
+  .replace(/\swidth="[^"]*"/, '')
+  .replace(/\sheight="[^"]*"/, '')
+  .replace(
+    /<svg\s/,
+    `<svg role="img" aria-label="${label}" class="${heightClass} ${className} w-auto block" `,
+  );
+---
+
+<Fragment set:html={svg} />

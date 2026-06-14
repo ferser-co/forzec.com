@@ -1,0 +1,90 @@
+---
+import Icon from './Icon.astro';
+import ProductCard from './ProductCard.astro';
+import { productLines, waNotifyMe } from '../data/site';
+
+const totalProducts = productLines.reduce((acc, l) => acc + l.products.length, 0);
+const numberWords: Record<number, string> = {
+  10: 'DIEZ', 11: 'ONCE', 12: 'DOCE', 13: 'TRECE', 14: 'CATORCE',
+  15: 'QUINCE', 16: 'DIECISÉIS', 17: 'DIECISIETE', 18: 'DIECIOCHO',
+};
+const productCountWord = numberWords[totalProducts] ?? String(totalProducts);
+---
+
+<section id="productos" class="relative bg-[#050505]">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
+    <div class="text-center max-w-3xl mx-auto mb-12 reveal">
+      <p class="mb-3 text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--color-forzec)]">
+        Catálogo
+      </p>
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-cine leading-[0.95] text-white">
+        {productCountWord} PRODUCTOS.<br/>
+        <span class="text-[var(--color-forzec)]">UNA PROMESA.</span>
+      </h2>
+    </div>
+
+    {productLines.map((line, idx) => {
+      const available = line.products.filter((p) => p.image);
+      const upcoming = line.products.filter((p) => !p.image);
+
+      return (
+        <div id={`linea-${line.id}`} class={`${idx > 0 ? 'mt-16 sm:mt-20' : ''} scroll-mt-24`}>
+          <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6 reveal">
+            <div>
+              <p class="text-[10px] font-black uppercase tracking-[0.25em] text-zinc-500">
+                Línea {String(idx + 1).padStart(2, '0')}
+              </p>
+              <h3 class="mt-1 text-2xl sm:text-3xl font-black tracking-cine text-white">
+                {line.fullName}
+              </h3>
+            </div>
+            <p class="text-sm text-zinc-400 sm:text-right sm:max-w-xs">
+              {line.subtitle}
+            </p>
+          </div>
+
+          {available.length > 0 && (
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 reveal">
+              {available.map((product) => (
+                <ProductCard product={product} />
+              ))}
+            </div>
+          )}
+
+          {upcoming.length > 0 && (
+            <div class="mt-8 rounded-xl border border-white/8 bg-white/[0.02] p-5 sm:p-6 reveal">
+              <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+                <p class="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.22em] text-[var(--color-forzec)]">
+                  <Icon name="clock" class="w-3.5 h-3.5" />
+                  Próximamente en esta línea
+                </p>
+                <p class="text-[11px] text-zinc-500">
+                  {upcoming.length} {upcoming.length === 1 ? 'producto' : 'productos'} en lanzamiento
+                </p>
+              </div>
+              <ul class="flex flex-wrap gap-2">
+                {upcoming.map((product) => (
+                  <li>
+                    <a
+                      href={waNotifyMe(product.name)}
+                      target="_blank"
+                      rel="noopener"
+                      class="group inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-2 text-xs font-bold text-zinc-200 hover:border-[var(--color-forzec)]/50 hover:bg-[var(--color-forzec)]/10 hover:text-white transition-colors"
+                      title={`Avisarme cuando ${product.name} esté disponible`}
+                    >
+                      <span>{product.name}</span>
+                      <span class="inline-flex items-center gap-1 text-[9px] uppercase tracking-[0.15em] text-zinc-500 group-hover:text-[var(--color-forzec)] transition-colors">
+                        <Icon name="bell" class="w-3 h-3" />
+                        Avisarme
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      );
+    })}
+  </div>
+</section>

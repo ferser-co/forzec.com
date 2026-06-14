@@ -1,0 +1,100 @@
+---
+import Icon from './Icon.astro';
+import { productLines } from '../data/site';
+
+const [hogar, detailing] = productLines;
+const totalProducts = productLines.reduce((acc, l) => acc + l.products.length, 0);
+const numberWords: Record<number, string> = {
+  10: 'Diez', 11: 'Once', 12: 'Doce', 13: 'Trece', 14: 'Catorce',
+  15: 'Quince', 16: 'Dieciséis', 17: 'Diecisiete', 18: 'Dieciocho',
+};
+const totalWord = numberWords[totalProducts] ?? String(totalProducts);
+---
+
+<section id="lineas" class="relative bg-[#0a0a0a]">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
+    <div class="max-w-3xl mb-12 reveal">
+      <p class="mb-3 text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--color-forzec)]">
+        <span class="inline-block h-px w-8 bg-[var(--color-forzec)] align-middle mr-2"></span>
+        La marca
+      </p>
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-cine leading-[0.95] text-white">
+        DOS LÍNEAS.<br/>
+        <span class="text-[var(--color-forzec)]">INFINITAS APLICACIONES.</span>
+      </h2>
+      <p class="mt-5 text-base sm:text-lg text-zinc-400 max-w-xl leading-relaxed">
+        FORZEC es la marca de limpieza técnica de ASEOLAB. {totalWord} productos
+        organizados en dos líneas para cubrir desde la cocina hasta el taller.
+      </p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-4">
+      {/* Línea Hogar — fondo claro */}
+      <a
+        href={`#linea-${hogar.id}`}
+        class="reveal group relative overflow-hidden rounded-2xl bg-[#f5f5f4] text-[#0a0a0a] p-8 sm:p-10 flex flex-col justify-between min-h-[280px] hover:-translate-y-1 transition-transform"
+      >
+        <div>
+          <p class="text-[10px] font-black uppercase tracking-[0.25em] text-zinc-500">
+            01 — {hogar.products.length} productos
+          </p>
+          <h3 class="mt-3 text-3xl sm:text-4xl font-black tracking-cine leading-[0.95]">
+            {hogar.name.split(' ')[0].toUpperCase()}<br/>
+            <span class="text-[var(--color-forzec)]">{hogar.name.split(' ').slice(1).join(' ').toUpperCase()}</span>
+          </h3>
+          <p class="mt-3 text-base text-zinc-700 max-w-sm">{hogar.subtitle}</p>
+        </div>
+        <div class="mt-8 flex items-center justify-between">
+          <ul class="flex flex-wrap gap-2">
+            {hogar.products.map((p) => (
+              <li class="text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-600 border border-zinc-300 rounded-full px-2.5 py-1">
+                {p.name}
+              </li>
+            ))}
+          </ul>
+          <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-zinc-900 text-white group-hover:bg-[var(--color-forzec)] transition-colors shrink-0 ml-3">
+            <Icon name="arrow-down" class="w-4 h-4" />
+          </span>
+        </div>
+      </a>
+
+      {/* Línea Detailing — fondo oscuro */}
+      <a
+        href={`#linea-${detailing.id}`}
+        class="reveal group relative overflow-hidden rounded-2xl bg-[#101012] text-white p-8 sm:p-10 flex flex-col justify-between min-h-[280px] border border-white/8 hover:-translate-y-1 transition-transform"
+        style="transition-delay: 100ms;"
+      >
+        {/* Halo rojo en esquina */}
+        <div class="absolute -top-20 -right-20 w-80 h-80 halo opacity-50 pointer-events-none"></div>
+
+        <div class="relative">
+          <p class="text-[10px] font-black uppercase tracking-[0.25em] text-zinc-500">
+            02 — {detailing.products.length} productos
+          </p>
+          <h3 class="mt-3 text-3xl sm:text-4xl font-black tracking-cine leading-[0.95]">
+            DETAILING<br/>
+            <span class="text-[var(--color-forzec)]">PRO</span>
+          </h3>
+          <p class="mt-3 text-base text-zinc-400 max-w-sm">{detailing.subtitle}</p>
+        </div>
+        <div class="relative mt-8 flex items-center justify-between">
+          <ul class="flex flex-wrap gap-2">
+            {detailing.products.slice(0, 6).map((p) => (
+              <li class="text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-400 border border-white/15 rounded-full px-2.5 py-1">
+                {p.name}
+              </li>
+            ))}
+            {detailing.products.length > 6 && (
+              <li class="text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--color-forzec)] border border-[var(--color-forzec)]/40 rounded-full px-2.5 py-1">
+                + {detailing.products.length - 6} más
+              </li>
+            )}
+          </ul>
+          <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-forzec)] text-white shrink-0 ml-3">
+            <Icon name="arrow-down" class="w-4 h-4" />
+          </span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>

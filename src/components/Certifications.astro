@@ -1,0 +1,59 @@
+---
+import Icon from './Icon.astro';
+import { site, certs } from '../data/site';
+
+// Mapeo de íconos para cada cert por defecto (sin logo oficial).
+const fallbackIcons: Record<string, string> = {
+  NFPA: 'shield-alert',
+  ABG: 'badge-check',
+  BIODEGRADABLE: 'leaf',
+  'USO SEGURO': 'shield-check',
+};
+---
+
+<section class="relative py-20 sm:py-24 bg-[#0a0a0a] border-y border-white/5">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl mb-10 reveal">
+      <p class="mb-3 text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--color-forzec)]">
+        <span class="inline-block h-px w-8 bg-[var(--color-forzec)] align-middle mr-2"></span>
+        Respaldo
+      </p>
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-cine leading-[0.95] text-white">
+        RESPALDO QUE GENERA<br/>
+        <span class="text-[var(--color-forzec)]">CONFIANZA.</span>
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 reveal">
+      {certs.map((c, i) => (
+        <div
+          class="flex items-start gap-4 p-5 rounded-lg border border-white/8 bg-white/[0.02] hover:border-[var(--color-forzec)]/40 transition-colors"
+          style={`transition-delay: ${i * 60}ms;`}
+        >
+          {site.showCertLogos ? (
+            <img
+              src={`/images/cert-${c.code.toLowerCase().replace(/\s+/g, '-')}.png`}
+              alt={`Certificación ${c.code}`}
+              class="h-12 w-12 object-contain shrink-0"
+              loading="lazy"
+            />
+          ) : (
+            <span class="shrink-0 inline-flex h-12 w-12 items-center justify-center rounded-md border border-white/10 text-[var(--color-forzec)]">
+              <Icon name={fallbackIcons[c.code] ?? 'badge-check'} class="w-6 h-6" />
+            </span>
+          )}
+          <div>
+            <h3 class="text-sm font-black uppercase tracking-[0.12em] text-white">{c.code}</h3>
+            <p class="mt-1 text-xs text-zinc-500 leading-relaxed">{c.label}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    {!site.showCertLogos && (
+      <p class="mt-6 text-[10px] uppercase tracking-[0.18em] text-zinc-600">
+        * Logos oficiales por confirmar. Aplicar <code class="text-zinc-400">showCertLogos = true</code> en site.ts cuando estén disponibles.
+      </p>
+    )}
+  </div>
+</section>

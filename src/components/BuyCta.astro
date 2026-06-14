@@ -1,0 +1,79 @@
+---
+import Icon from './Icon.astro';
+import Logo from './Logo.astro';
+import { site, waUrl } from '../data/site';
+
+const wa = waUrl();
+---
+
+<section id="comprar" class="relative overflow-hidden py-20 sm:py-28 bg-[#0a0a0a]">
+  {/* Halo de fondo */}
+  <div class="absolute inset-0 -z-10 pointer-events-none">
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[500px] halo opacity-60"></div>
+  </div>
+
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center">
+    <div class="reveal">
+      <p class="mb-4 text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--color-forzec)]">
+        Cómo conseguirlo
+      </p>
+      <h2 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-cine leading-[0.95] text-white mb-5">
+        PIDE <Logo class="inline-block h-[1em] align-[-0.12em] text-[var(--color-forzec)] mx-2" />
+        <br class="hidden sm:block"/>
+        DIRECTO DESDE TU CELULAR.
+      </h2>
+      <p class="text-base sm:text-lg text-zinc-400 max-w-2xl mx-auto leading-relaxed mb-10">
+        Escribinos por WhatsApp para cotizar cualquier producto o pídelo en
+        minutos por Rappi. Envíos a toda Colombia.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-3 justify-center mb-8">
+        <a
+          href={wa}
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center justify-center gap-2 rounded-md bg-[#25D366] px-7 py-4 text-sm font-black uppercase tracking-[0.15em] text-white shadow-lg shadow-emerald-900/40 hover:brightness-110 transition-all"
+        >
+          <Icon name="message-circle" class="w-4 h-4" />
+          Cotizar por WhatsApp
+        </a>
+        <a
+          href={site.rappiUrl}
+          target="_blank"
+          rel="noopener"
+          class="btn-forzec inline-flex items-center justify-center gap-2 rounded-md px-7 py-4 text-sm font-black uppercase tracking-[0.15em] text-white"
+        >
+          <Icon name="shopping-bag" class="w-4 h-4" />
+          Pedir por Rappi
+        </a>
+      </div>
+
+      {site.rappiQr && (
+        <div class="inline-flex items-center gap-4 p-3 pr-5 rounded-xl border border-white/10 bg-white/[0.03]">
+          <div class="shrink-0 rounded-md bg-white p-2">
+            <img
+              src={site.rappiQr}
+              alt="Código QR para pedir FORZEC en Rappi"
+              class="block h-20 w-20 object-contain"
+              loading="lazy"
+            />
+          </div>
+          <div class="text-left">
+            <p class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-forzec)]">
+              O escanea con tu cámara
+            </p>
+            <p class="mt-1 text-xs text-zinc-400 leading-snug max-w-[14rem]">
+              Abre Rappi directo y haz tu pedido fácil y rápido.
+            </p>
+          </div>
+        </div>
+      )}
+
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-500">
+        <span class="inline-flex items-center gap-1.5"><Icon name="truck" class="w-3.5 h-3.5 text-[var(--color-forzec)]" /> Envíos a toda Colombia</span>
+        <span class="inline-flex items-center gap-1.5"><Icon name="shield" class="w-3.5 h-3.5 text-[var(--color-forzec)]" /> Pagos seguros</span>
+        <span class="inline-flex items-center gap-1.5"><Icon name="badge-check" class="w-3.5 h-3.5 text-[var(--color-forzec)]" /> Producto de ASEOLAB</span>
+      </div>
+    </div>
+  </div>
+</section>

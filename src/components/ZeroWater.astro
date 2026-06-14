@@ -1,0 +1,58 @@
+---
+import Icon from './Icon.astro';
+import { metrics } from '../data/site';
+---
+
+<section class="relative overflow-hidden py-20 sm:py-28 bg-[#050505]">
+  {/* Halo lateral */}
+  <div class="absolute -left-40 top-1/2 -translate-y-1/2 h-[500px] w-[500px] halo opacity-50 pointer-events-none"></div>
+
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-[1.1fr_1fr] gap-12 lg:gap-16 items-center">
+      <div class="reveal">
+        <h2 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-cine leading-[0.95] text-white mb-3">
+          <span class="text-[var(--color-forzec)]">CERO AGUA.</span>
+        </h2>
+        <h2 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-cine leading-[0.95] text-white mb-6">
+          MÁXIMA EFICIENCIA.
+        </h2>
+        <p class="text-base sm:text-lg text-zinc-400 max-w-xl leading-relaxed mb-10">
+          La limpieza profesional del futuro no desperdicia agua. Ahorra hasta
+          un 95% de consumo en cada uso, sin sacrificar potencia ni acabado.
+        </p>
+
+        <div class="grid grid-cols-3 gap-3 sm:gap-5 max-w-xl">
+          {metrics.map((m) => (
+            <div class="text-center sm:text-left p-4 sm:p-5 rounded-lg border border-white/8 bg-white/[0.02]">
+              <div class="text-3xl sm:text-4xl font-black tracking-cine text-[var(--color-forzec)] leading-none">
+                {m.value}
+              </div>
+              <div class="mt-2 text-[10px] sm:text-xs font-bold uppercase tracking-[0.15em] text-zinc-400">
+                {m.label}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Lista de pilares sostenibles */}
+      <div class="reveal space-y-4" style="transition-delay: 120ms;">
+        {[
+          { icon: 'recycle',     title: 'Sostenible',   desc: 'Fórmula biodegradable que cuida el planeta.' },
+          { icon: 'shield-check', title: 'Seguro',       desc: 'No corrosivo, no inflamable, seguro para tus superficies.' },
+          { icon: 'award',       title: 'Profesional',  desc: 'Desarrollado para profesionales y talleres exigentes.' },
+        ].map((p) => (
+          <div class="flex items-start gap-5 p-5 rounded-lg border border-white/8 bg-white/[0.02]">
+            <span class="shrink-0 inline-flex h-12 w-12 items-center justify-center rounded-md bg-[var(--color-forzec)]/10 text-[var(--color-forzec)]">
+              <Icon name={p.icon} class="w-6 h-6" />
+            </span>
+            <div>
+              <h3 class="text-base font-black uppercase tracking-[0.1em] text-white">{p.title}</h3>
+              <p class="text-sm text-zinc-400 mt-1 leading-relaxed">{p.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
